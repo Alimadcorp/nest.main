@@ -1,4 +1,5 @@
-const socket = new WebSocket(`ws://${location.host}:4567`);
+const socket = new WebSocket(`ws://alimad.hackclub.app:4567`);
+console.log("connect")
 const notes = {};
 const cursors = {};
 
