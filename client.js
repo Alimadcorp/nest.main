@@ -1,4 +1,4 @@
-const socket = new WebSocket(`ws://${location.host.replace(":5500", ":3000")}`);
+const socket = new WebSocket(`ws://${location.host}:4567`);
 const notes = {};
 const cursors = {};
 
