@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 const app = express();
 app.use(express.static('public'));
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4567;
 const server = app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 const wss = new WebSocketServer({ server });
 

@@ -1,8 +1,6 @@
 const protocol = location.protocol === "https:" ? "wss" : "ws";
 const socket = new WebSocket(
-  `${protocol}://${location.host
-    .replace(":5500", "")
-    .replace(":3000", "")}:4000`
+  `${protocol}://ws.alimad.hackclub.app`
 );
 let userId = null;
 let myUsername =
