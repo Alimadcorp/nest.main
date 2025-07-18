@@ -1,49 +1,50 @@
-let panX=0, panY=0, scaleF=1;
-let dragging=false, prevX, prevY;
+let curs = {};
+let cursp = {};
+let drawLayer;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(0);
-  noLoop();
+  drawLayer = createGraphics(windowWidth, windowHeight);
+  drawLayer.clear(); // transparent background
+
+  noCursor();
+  textAlign(CENTER, TOP);
+  textSize(12);
+  frameRate(60);
+  textFont('monospace');
 }
+
 function draw() {
-  fill(255, 255, 255, 10);
-  rect(0, 0, width, height);
-}
+  background(0);
+  image(drawLayer, 0, 0);
 
-function mousePressed() {
-  if (keyIsDown(CONTROL)) {
-    dragging = true;
-    prevX = mouseX;
-    prevY = mouseY;
+  for (const id in curs) {
+    const o = curs[id];
+    const t = others[id];
+    o.x = lerp(o.x, t.x, 0.5);
+    o.y = lerp(o.y, t.y, 0.5);
+
+    if (t.held && cursp[id]) {
+      drawLayer.stroke(o.color);
+      drawLayer.strokeWeight(3);
+      drawLayer.line(cursp[id].x, cursp[id].y, o.x, o.y);
+    }
+
+    drawCursor(o.x, o.y, o.color, o.username, t.held, cursp[id]?.x, cursp[id]?.y);
   }
+
+  cursp = structuredClone(curs);
 }
 
-function mouseDragged() {
-  if (dragging) {
-    panX += mouseX - prevX;
-    panY += mouseY - prevY;
-    prevX = mouseX;
-    prevY = mouseY;
-    applyTransform();
+function drawCursor(x, y, color, name, held, px, py) {
+  noStroke();
+  fill(color);
+  ellipse(x, y, 12, 12);
+  fill(255);
+  text(name, x, y + 12);
+  if (held && px != null && py != null) {
+    stroke(255);
+    strokeWeight(10);
+    line(px, py, x, y);
   }
-}
-
-function mouseReleased() {
-  dragging = false;
-}
-
-function mouseWheel(ev) {
-  const s = ev.delta > 0 ? 0.9 : 1.1;
-  scaleF *= s;
-  scaleF = constrain(scaleF, 0.5, 2);
-  applyTransform();
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-}
-
-function applyTransform() {
-  select('body').style('transform', `translate(${panX}px,${panY}px) scale(${scaleF})`);
 }
