@@ -1,6 +1,6 @@
 const protocol = location.protocol === "https:" ? "wss" : "ws";
 const socket = new WebSocket(
-  `${protocol}://vast-forks-pick.loca.lt`
+  `wss://3ad298c09ed2.ngrok-free.app`
 );
 let userId = null;
 let myUsername =
