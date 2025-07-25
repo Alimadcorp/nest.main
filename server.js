@@ -28,8 +28,7 @@ wss.on('connection', (ws) => {
       const out = {
         type: 'cursor',
         id: data.id,
-        x: msg.x,
-        y: msg.y,
+        msg: msg.msg,
         color: data.color,
         username: data.username,
         held: msg.held
