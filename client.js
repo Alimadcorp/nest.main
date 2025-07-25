@@ -1,17 +1,16 @@
 const protocol = location.protocol === "https:" ? "wss" : "ws";
 const socket = new WebSocket(
-  //`wss://3ad298c09ed2.ngrok-free.app`
-  `ws://localhost:4567`
+  `wss://3ad298c09ed2.ngrok-free.app`
+  //`ws://localhost:4567`
 );
 let userId = null;
 let myColor = null;
 let mouseOut = [];
 let myUsername =
-  localStorage.getItem("n.mmyusername") + Math.random() ||
+  localStorage.getItem("n.mmyusername") ||
   prompt("Choose your username:") ||
   "Anonymous";
-//
-localStorage.setItem("n.mmyusername", "myUsername");
+localStorage.setItem("n.mmyusername", myUsername);
 let others = {}; // id → { x, y, color, username }
 
 socket.addEventListener("open", () => {
