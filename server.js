@@ -66,6 +66,11 @@ wss.on("connection", (ws) => {
         if (client.readyState === 1) client.send(JSON.stringify(out));
       }
     }
+    if (msg.type === "clear") {
+      for (const client of clients.keys()) {
+        if (client.readyState === 1) client.send(JSON.stringify({type: "clear"}));
+      }
+    }
   });
 
   ws.on("close", () => {

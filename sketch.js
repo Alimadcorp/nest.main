@@ -6,7 +6,7 @@ let drawLayer;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   drawLayer = createGraphics(windowWidth, windowHeight);
-  drawLayer.clear(); // transparent backgrou
+  drawLayer.clear();
 
   noCursor();
   textAlign(CENTER, TOP);
@@ -107,4 +107,12 @@ function drawCursor(x, y, color, name, held, px, py) {
     strokeWeight(10);
     line(px, py, x, y);
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  const newDrawLayer = createGraphics(windowWidth, windowHeight);
+  newDrawLayer.clear();
+  newDrawLayer.image(drawLayer, 0, 0);
+  drawLayer = newDrawLayer;
 }

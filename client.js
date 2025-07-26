@@ -3,19 +3,25 @@ let socket;
 let userId = null;
 let myColor = null;
 let mouseOut = [];
+let last = {};
 let myUsername =
-  Math.random() ||
   localStorage.getItem("n.mmyusername") ||
   prompt("Choose your username:") ||
   "Anonymous";
 localStorage.setItem("n.mmyusername", myUsername);
-let others = {}; // id → { x, y, color, username }
+let others = {};
 
 window.addEventListener("load", () => {
-  socket = new WebSocket(
-    `wss://3ad298c09ed2.ngrok-free.app`
-    //`ws://localhost:4567`
-  );
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "r" || event.key === "R") {
+      socket.send(JSON.stringify({ type: "clear" }));
+    }
+  });
+  const url =
+    window.location != "http://127.0.0.1:5500/"
+      ? `wss://3ad298c09ed2.ngrok-free.app`
+      : `ws://localhost:4567`;
+  socket = new WebSocket(url);
   socket.addEventListener("open", () => {
     socket.send(JSON.stringify({ type: "set-username", username: myUsername }));
     mouseOut = [];
@@ -34,6 +40,9 @@ window.addEventListener("load", () => {
     }
     if (msg.type === "history") {
       makeHistory(msg.data);
+    }
+    if (msg.type === "clear") {
+      drawLayer.clear();
     }
     if (msg.type === "leave") {
       delete others[msg.id];
@@ -61,7 +70,7 @@ window.addEventListener("load", () => {
       await new Promise((resolve) => {
         setTimeout(() => {
           resolve();
-        }, 2);
+        }, 4);
       });
     }
   }
@@ -71,6 +80,7 @@ window.addEventListener("load", () => {
     for (let i = 0; i < mouseOut.length; i++) {
       mouseMessage += `${mouseOut[i].x},${mouseOut[i].y};`;
     }
+    if(mouseMessage == "") return;
     socket.send(
       JSON.stringify({
         type: "cursor",
@@ -82,10 +92,20 @@ window.addEventListener("load", () => {
   }, 100);
 
   setInterval(() => {
-    mouseOut.push({
+    const current = {
       x: mouseX,
       y: mouseY,
       held: mouseIsPressed,
-    });
-  }, 10);
+    };
+
+    if (
+      current.x !== last.x ||
+      current.y !== last.y ||
+      current.held !== last.held ||
+      current.held
+    ) {
+      mouseOut.push(current);
+      last = current;
+    }
+  }, 4);
 });
