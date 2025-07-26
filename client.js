@@ -13,7 +13,7 @@ let others = {};
 
 window.addEventListener("load", () => {
   document.addEventListener("keydown", (event) => {
-    if (event.key === "r" || event.key === "R") {
+    if (event.key === "u" || event.key === "U") {
       socket.send(JSON.stringify({ type: "clear" }));
     }
   });
