@@ -68,6 +68,7 @@ wss.on("connection", (ws) => {
     }
     if (msg.type === "clear") {
       for (const client of clients.keys()) {
+        clearMemory();
         if (client.readyState === 1) client.send(JSON.stringify({type: "clear"}));
       }
     }
