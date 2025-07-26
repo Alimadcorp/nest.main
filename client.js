@@ -13,8 +13,8 @@ let others = {}; // id → { x, y, color, username }
 
 window.addEventListener("load", () => {
   socket = new WebSocket(
-    //`wss://3ad298c09ed2.ngrok-free.app`
-    `ws://localhost:4567`
+    `wss://3ad298c09ed2.ngrok-free.app`
+    //`ws://localhost:4567`
   );
   socket.addEventListener("open", () => {
     socket.send(JSON.stringify({ type: "set-username", username: myUsername }));
