@@ -6,7 +6,7 @@ let drawLayer;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   drawLayer = createGraphics(windowWidth, windowHeight);
-  drawLayer.clear(); // transparent background
+  drawLayer.clear(); // transparent backgrou
 
   noCursor();
   textAlign(CENTER, TOP);
@@ -26,7 +26,6 @@ function draw() {
   image(drawLayer, 0, 0);
 
   for (const id in curs) {
-    console.log(id, userId);
     if (id == userId) {
       continue;
     }
@@ -58,9 +57,43 @@ function draw() {
     drawLayer.line(pmouseX, pmouseY, mouseX, mouseY);
   }
 
-  drawCursor(mouseX, mouseY, myColor, myUsername, mouseIsPressed, pmouseX, pmouseY);
+  drawCursor(
+    mouseX,
+    mouseY,
+    myColor,
+    myUsername,
+    mouseIsPressed,
+    pmouseX,
+    pmouseY
+  );
 
   cursp = structuredClone(curs);
+}
+
+function makeHistory(history) {
+  let k = Object.keys(history);
+  for (let i = 0; i < k.length; i++) {
+    if (history[k[i]].length == 0) {
+      delete history[k[i]];
+    }
+  }
+  k = Object.keys(history);
+  console.log(history);
+  for (let i = 0; i < k.length; i++) {
+    const col = k[i];
+    const strokey = history[k[i]].join("").split(";").filter(Boolean); // omg
+    drawLayer.strokeWeight(3);
+    drawLayer.stroke(col);
+
+    let prev = null;
+    for (let j = 0; j < strokey.length; j++) {
+      const [x, y] = strokey[j].split(",").map(Number);
+      if (prev) {
+        drawLayer.line(prev[0], prev[1], x, y);
+      }
+      prev = [x, y];
+    }
+  }
 }
 
 function drawCursor(x, y, color, name, held, px, py) {
