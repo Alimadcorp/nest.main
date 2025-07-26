@@ -47,6 +47,7 @@ wss.on("connection", (ws) => {
         holding[data.color] = false;
       }
       if (msg.held) {
+        if(!drawn[data.color]) drawn[data.color] = [];
         if (holding[data.color]) {
           drawn[data.color][drawn[data.color].length - 1] += msg.msg;
         } else {
