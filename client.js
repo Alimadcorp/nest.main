@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
   });
   const url =
     window.location != "http://127.0.0.1:5500/"
-      ? `wss://1f6b959d28e1.ngrok-free.app`
+      ? `wss://4c7546cd9d21.ngrok-free.app`
       : `ws://localhost:4567`;
   socket = new WebSocket(url);
   socket.addEventListener("open", () => {
